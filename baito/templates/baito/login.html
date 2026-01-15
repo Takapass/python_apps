@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>ログイン</title>
+    <link rel="stylesheet" href="{% static 'baito/login.css' %}">
+</head>
+<body>
+
+<div class="card">
+    <h2>ログイン</h2>
+    <input type="text" placeholder="ユーザー名">
+    <input type="password" placeholder="パスワード">
+    <button>決定</button>
+</div>
+
+<a class="link" href="{% url 'baito:signup' %}">新規登録</a>
+
+</body>
+</html>

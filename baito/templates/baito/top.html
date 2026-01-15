@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>トップ</title>
+    <link rel="stylesheet" href="{% static 'baito/top.css' %}">
+</head>
+<body>
+
+<header class="header">
+    <div class="header-left">日付</div>
+    <div class="header-right">共有・転送</div>
+</header>
+
+<main class="main">
+    <section class="calendar">カレンダー</section>
+    <section class="shift-list">シフト一覧</section>
+</main>
+
+<footer class="footer">
+    <!-- フッターメニュー -->
+     <nav class="footer-menu">
+        <a>ホーム</a>
+        <a href="{% url 'baito:sift' %}">シフト追加</a>
+        <a href="{% url 'baito:setting' %}">設定</a>
+    </nav>
+</footer>
+
+</body>
+</html>

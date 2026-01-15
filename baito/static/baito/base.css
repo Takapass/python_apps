@@ -1,0 +1,12 @@
+:root {
+    --safe-top: env(safe-area-inset-top);
+    --safe-bottom: env(safe-area-inset-bottom);
+}
+
+body {
+    margin: 0;
+    padding-top: var(--safe-top);
+    padding-bottom: var(--safe-bottom);
+    min-height: 100svh; /* iOS対応 */
+    font-family: sans-serif;
+}
