@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>トップ</title>
+    <link rel="stylesheet" href="{% static 'baito/base.css' %}">
+
     <link rel="stylesheet" href="{% static 'baito/top.css' %}">
 </head>
 <body>
@@ -15,18 +17,37 @@
 </header>
 
 <main class="main">
-    <section class="calendar">カレンダー</section>
-    <section class="shift-list">シフト一覧</section>
+    <section class="calendar">
+        <div class="calendar-header">
+            <button id="prevMonth">＜</button>
+            <span id="monthLabel"></span>
+            <button id="nextMonth">＞</button>
+        </div>
+
+        <div class="calendar-grid" id="calendarGrid"></div>
+    </section>
+
+    <section class="shift-list">
+        <h3 id="shiftTitle">日付を選択してください</h3>
+        <ul id="shiftItems"></ul>
+    </section>
 </main>
+
+<script src="{% static 'baito/calendar.js' %}"></script>
+
+    
+    <!-- <section class="shift-list">シフト一覧</section>
+</main> -->
 
 <footer class="footer">
     <!-- フッターメニュー -->
-     <nav class="footer-menu">
-        <a>ホーム</a>
-        <a href="{% url 'baito:sift' %}">シフト追加</a>
-        <a href="{% url 'baito:setting' %}">設定</a>
+    <nav class="footer-menu">
+        <a href="{% url 'baito:sift' %}" class="footer-menu-item">シフト追加</a>
+        <a href="{% url 'baito:setting' %}" class="footer-menu-item">設定</a>
+        <a href="{% url 'baito:login' %}" class="footer-menu-item">ログアウト</a>
+        <!-- <a href="#">ログアウト</a> -->
     </nav>
 </footer>
 
 </body>
-</html>
+</html> 
