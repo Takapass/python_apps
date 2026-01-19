@@ -14,7 +14,7 @@
     <h2>ログイン</h2>
     <input type="text" placeholder="ユーザー名">
     <input type="password" placeholder="パスワード">
-    <button>決定</button>
+    <button onclick="location.href='{% url 'baito:top' %}'">決定</button>
 </div>
 
 <a class="link" href="{% url 'baito:signup' %}">新規登録</a>
