@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>トップ</title>
+    <link rel="stylesheet" href="{% static 'baito/base.css' %}">
+
     <link rel="stylesheet" href="{% static 'baito/top.css' %}">
 </head>
 <body>
@@ -21,12 +23,12 @@
 
 <footer class="footer">
     <!-- フッターメニュー -->
-     <nav class="footer-menu">
-        <a>ホーム</a>
-        <a href="{% url 'baito:sift' %}">シフト追加</a>
-        <a href="{% url 'baito:setting' %}">設定</a>
+    <nav class="footer-menu">
+        <a href="{% url 'baito:sift' %}" class="footer-menu-item">シフト追加</a>
+        <a href="{% url 'baito:setting' %}" class="footer-menu-item">設定</a>
+        <a href="{% url 'baito:logout' %}" class="footer-menu-item">ログアウト</a>
     </nav>
 </footer>
 
 </body>
-</html>
+</html> 
