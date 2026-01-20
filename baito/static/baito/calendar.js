@@ -3,32 +3,57 @@ const label = document.getElementById("monthLabel");
 const shiftTitle = document.getElementById("shiftTitle");
 const shiftItems = document.getElementById("shiftItems");
 
+let shiftData = {};
 let current = new Date();
+let selectedCell = null;
 
-/* 仮データ（あとでDB連携） */
-const shiftData = {
-    "2026-01-20": ["10:00〜15:00"],
-    "2026-01-22": ["18:00〜22:00", "23:00〜25:00"]
-};
+/* =====================
+   API から月データ取得
+===================== */
+async function loadMonth(year, month) {
+    const res = await fetch(`/api/shifts/?year=${year}&month=${month}`);
+    shiftData = await res.json();
+}
 
+/* =====================
+   シフト表示
+===================== */
 function renderShift(dateStr) {
     shiftTitle.textContent = `${dateStr} のシフト`;
     shiftItems.innerHTML = "";
 
     const shifts = shiftData[dateStr] || [];
+    let totalHours = 0;
+    let totalPay = 0;
 
     if (shifts.length === 0) {
         shiftItems.innerHTML = "<li>シフトなし</li>";
-        return;
     }
 
     shifts.forEach(s => {
+        totalHours += s.hours;
+        totalPay += s.pay;
+
         const li = document.createElement("li");
-        li.textContent = s;
+        li.innerHTML = `
+            <div>${s.start}〜${s.end}</div>
+            <div style="margin-top:6px;">
+                <a href="/sift/?id=${s.id}">編集</a>
+                <a href="/delete/${s.id}/" style="color:red; margin-left:8px;">削除</a>
+            </div>
+        `;
         shiftItems.appendChild(li);
     });
+
+    document.getElementById("totalHours").textContent =
+        totalHours.toFixed(2);
+    document.getElementById("totalPay").textContent =
+        Math.floor(totalPay).toLocaleString();
 }
 
+/* =====================
+   カレンダー描画
+===================== */
 function renderCalendar(date) {
     grid.innerHTML = "";
 
@@ -52,34 +77,80 @@ function renderCalendar(date) {
         const dateStr =
             `${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
 
-        if (
-            d === today.getDate() &&
-            month === today.getMonth() &&
-            year === today.getFullYear()
-        ) {
-            cell.classList.add("today");
-        }
-
         if (shiftData[dateStr]) {
             const dot = document.createElement("div");
             dot.className = "shift-dot";
             cell.appendChild(dot);
         }
 
-        cell.onclick = () => renderShift(dateStr);
+        if (
+            d === today.getDate() &&
+            month === today.getMonth() &&
+            year === today.getFullYear()
+        ){
+            cell.classList.add("today");
+        }
+
+        cell.onclick = () => {
+            if (selectedCell) {
+                selectedCell.classList.remove("selected");
+            }
+            cell.classList.add("selected");
+            selectedCell = cell;
+            renderShift(dateStr);
+        };
 
         grid.appendChild(cell);
     }
 }
 
-document.getElementById("prevMonth").onclick = () => {
-    current.setMonth(current.getMonth() - 1);
+/* =====================
+   選択リセット
+===================== */
+function resetSelection() {
+    selectedCell = null;
+    shiftTitle.textContent = "日付を選択してください";
+    shiftItems.innerHTML = "";
+    document.getElementById("totalHours").textContent = "0";
+    document.getElementById("totalPay").textContent = "0";
+}
+
+/* =====================
+   ★ 月変更（ここが超重要）
+===================== */
+function changeMonth(diff) {
+    current.setDate(1); // ← これがないと1月が飛ぶ
+    current.setMonth(current.getMonth() + diff);
+}
+
+/* =====================
+   月切替ボタン
+===================== */
+document.getElementById("prevMonth").onclick = async () => {
+    changeMonth(-1);
+    await loadMonth(current.getFullYear(), current.getMonth() + 1);
+    resetSelection();
     renderCalendar(current);
 };
 
-document.getElementById("nextMonth").onclick = () => {
-    current.setMonth(current.getMonth() + 1);
+document.getElementById("nextMonth").onclick = async () => {
+    changeMonth(1);
+    await loadMonth(current.getFullYear(), current.getMonth() + 1);
+    resetSelection();
     renderCalendar(current);
 };
 
-renderCalendar(current);
+/* =====================
+   初期化（1回だけ）
+===================== */
+async function init() {
+    try {
+        await loadMonth(current.getFullYear(), current.getMonth() + 1);
+    } catch (e) {
+        console.error("loadMonth failed", e);
+        shiftData = {};
+    }
+    renderCalendar(current);
+}
+
+init();

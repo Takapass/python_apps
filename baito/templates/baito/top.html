@@ -30,22 +30,31 @@
     <section class="shift-list">
         <h3 id="shiftTitle">日付を選択してください</h3>
         <ul id="shiftItems"></ul>
+
+        <div class="shift-summary">
+            <div>勤務時間合計：<span id="totalHours">0</span> 時間</div>
+            <div>給料合計：¥<span id="totalPay">0</span></div>
+        </div>
     </section>
 </main>
 
 <script src="{% static 'baito/calendar.js' %}"></script>
 
-    
-    <!-- <section class="shift-list">シフト一覧</section>
-</main> -->
-
 <footer class="footer">
     <!-- フッターメニュー -->
     <nav class="footer-menu">
-        <a href="{% url 'baito:sift' %}" class="footer-menu-item">シフト追加</a>
-        <a href="{% url 'baito:setting' %}" class="footer-menu-item">設定</a>
-        <a href="{% url 'baito:login' %}" class="footer-menu-item">ログアウト</a>
-        <!-- <a href="#">ログアウト</a> -->
+        <a href="{% url 'baito:sift' %}" class="footer-menu-item active">
+            <span class="icon">＋</span>
+            <span>追加</span>
+        </a>
+        <a href="{% url 'baito:setting' %}" class="footer-menu-item active">
+            <span class="icon">⚙️</span>
+            <span>設定</span>
+        </a>
+        <a href="{% url 'baito:login' %}" class="footer-menu-item active">
+            <span class="icon">🔒</span>
+            <span>ログアウト</span>
+        </a>
     </nav>
 </footer>
 

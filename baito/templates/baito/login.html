@@ -12,9 +12,26 @@
 
 <div class="card">
     <h2>ログイン</h2>
-    <input type="text" placeholder="ユーザー名">
-    <input type="password" placeholder="パスワード">
-    <button onclick="location.href='{% url 'baito:top' %}'">決定</button>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <input
+            type="text"
+            name="username"
+            placeholder="ユーザー名"
+            required
+        >
+
+        <input
+            type="password"
+            name="password"
+            placeholder="パスワード"
+            required
+        >
+
+        <button type="submit">決定</button>
+    </form>
 </div>
 
 <a class="link" href="{% url 'baito:signup' %}">新規登録</a>
