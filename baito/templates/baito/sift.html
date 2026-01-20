@@ -10,35 +10,71 @@
 <body>
 
 <div class="card">
-    <form method="post">
+    <form method="post" id="shiftForm">
         {% csrf_token %}
-    
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
         <label>
             日付：
-            <input type="date" name="date" value="{{ shift.date|date:'Y-m-d' }}" required>
+            <input type="date"
+                   name="date"
+                   value="{{ shift.date|date:'Y-m-d' }}"
+                   required>
         </label>
-    
+
         <label>
             開始：
-            <input type="time" name="start" value="{{ shift.start_time|time:'H:i' }}" required>
+            <input type="time"
+                   name="start"
+                   value="{{ shift.start_time|time:'H:i' }}"
+                   step="300"
+                   required>
         </label>
-    
+
         <label>
             終了：
-            <input type="time" name="end" value="{{ shift.end_time|time:'H:i' }}" required>
+            <input type="time"
+                   name="end"
+                   value="{{ shift.end_time|time:'H:i' }}"
+                   step="300"
+                   required>
         </label>
-    
+
         <label>
             時給：
-            <input type="number" name="hourly_wage" value="{{ shift.hourly_wage|default:1000 }}" required>
+            <input type="number"
+                   name="hourly_wage"
+                   value="{{ shift.hourly_wage|default:1000 }}"
+                   min="0"
+                   required>
         </label>
-    
+
         <button type="submit">保存</button>
-    </form>    
+    </form>
 </div>
 
 <a href="{% url 'baito:top' %}" class="fab left">戻る</a>
 <div class="fab right">カメラ</div>
+
+<script>
+/* =====================
+   スマホ誤操作防止
+===================== */
+document.getElementById("shiftForm").addEventListener("submit", e => {
+    const start = document.querySelector('[name="start"]').value;
+    const end = document.querySelector('[name="end"]').value;
+
+    if (!start || !end) return;
+
+    if (start >= end) {
+        e.preventDefault();
+        alert("終了時刻は開始時刻より後にしてください");
+    }
+});
+</script>
 
 </body>
 </html>
