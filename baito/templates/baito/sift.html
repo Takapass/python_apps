@@ -10,10 +10,11 @@
 <body>
 
 <div class="card">
-    <input type="text" placeholder="日付">
+    <input type="date" placeholder="日付">
+    <input type="text" placeholder="勤務時間">
     <input type="text" placeholder="勤務先">
     <input type="text" placeholder="給料見込み">
-    <button>決定</button>
+    <button onclick="location.href='{% url 'baito:top' %}'">決定</button>
 </div>
 
 <a href="{% url 'baito:top' %}" class="fab left">戻る</a>

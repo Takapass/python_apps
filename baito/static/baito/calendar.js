@@ -6,7 +6,7 @@ const shiftItems = document.getElementById("shiftItems");
 let current = new Date();
 
 /* 仮データ（あとでDB連携） */
-const shiftData = {
+const JSON = {
     "2026-01-20": ["10:00〜15:00"],
     "2026-01-22": ["18:00〜22:00", "23:00〜25:00"]
 };
@@ -15,7 +15,7 @@ function renderShift(dateStr) {
     shiftTitle.textContent = `${dateStr} のシフト`;
     shiftItems.innerHTML = "";
 
-    const shifts = shiftData[dateStr] || [];
+    const shifts = JSON[dateStr] || [];
 
     if (shifts.length === 0) {
         shiftItems.innerHTML = "<li>シフトなし</li>";
@@ -60,7 +60,7 @@ function renderCalendar(date) {
             cell.classList.add("today");
         }
 
-        if (shiftData[dateStr]) {
+        if (JSON[dateStr]) {
             const dot = document.createElement("div");
             dot.className = "shift-dot";
             cell.appendChild(dot);

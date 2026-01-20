@@ -145,14 +145,24 @@ body {
 }
 
 /* フッターメニュー各項目 */
-.footer-menu-item {
+/* .footer-menu-item {
     flex: 1;
     text-align: center;
     text-decoration: none;
     color: #333;
     font-size: 14px;
     font-weight: 500;
+} */
+
+.footer-menu-item {
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
 }
+.icon {
+    font-size: 20px;
+}
+
 
 /* タップしやすくする */
 .footer-menu-item:active {
@@ -243,4 +253,9 @@ body {
 .calendar-grid {
     display: grid !important;
     width: 100%;
+}
+
+.footer-menu-item.active {
+    color: #ff8a3d;
+    font-weight: bold;
 }

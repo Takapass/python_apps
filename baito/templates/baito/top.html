@@ -42,9 +42,21 @@
 <footer class="footer">
     <!-- フッターメニュー -->
     <nav class="footer-menu">
-        <a href="{% url 'baito:sift' %}" class="footer-menu-item">シフト追加</a>
-        <a href="{% url 'baito:setting' %}" class="footer-menu-item">設定</a>
-        <a href="{% url 'baito:login' %}" class="footer-menu-item">ログアウト</a>
+        <!-- <a href="{% url 'baito:sift' %}" class="footer-menu-item">シフト追加</a> -->
+        <!-- <a href="{% url 'baito:setting' %}" class="footer-menu-item active">設定</a> -->
+        <!-- <a href="{% url 'baito:login' %}" class="footer-menu-item active">ログアウト</a> -->
+        <a href="{% url 'baito:sift' %}" class="footer-menu-item active">
+            <span class="icon">＋</span>
+            <span>追加</span>
+        </a>
+        <a href="{% url 'baito:setting' %}" class="footer-menu-item active">
+            <span class="icon">⚙️</span>
+            <span>設定</span>
+        </a>
+        <a href="{% url 'baito:login' %}" class="footer-menu-item active">
+            <span class="icon">🔒</span>
+            <span>ログアウト</span>
+        </a>
         <!-- <a href="#">ログアウト</a> -->
     </nav>
 </footer>
