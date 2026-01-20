@@ -1,8 +1,6 @@
 @import url("base.css");
 
 html,
-
-html,
 body {
     height: 100%;
 }
@@ -12,13 +10,11 @@ body {
     font-family: sans-serif;
 }
 
-/* メインだけflexにする */
 .main {
     flex: 1;
     padding-bottom: 56px;
 }
 
-/* ヘッダー */
 .header {
     background: #ff8a3d;
     color: #fff;
@@ -27,51 +23,40 @@ body {
     align-items: center;
     padding: 12px;
     height: 48px;
-    /* 固定 */
 }
 
-/* フッター */
 .footer {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-
-    height: 56px;                 /* ← スマホ用に固定 */
+    height: 56px;
     background: #fff;
     border-top: 1px solid #ddd;
     z-index: 1000;
+    padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* フッターメニュー全体 */
 .footer-menu {
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: space-around;
-    /* 均等配置 */
     align-items: center;
 }
 
-/* フッターメニュー各項目 */
 .footer-menu-item {
     display: flex;
     flex-direction: column;
     font-size: 12px;
 }
+
 .icon {
     font-size: 20px;
 }
 
-
-/* タップしやすくする */
 .footer-menu-item:active {
     background: rgba(0, 0, 0, 0.05);
-}
-
-/* iPhoneのセーフエリア対応 */
-.footer {
-    padding-bottom: env(safe-area-inset-bottom);
 }
 
 .calendar {
@@ -79,18 +64,34 @@ body {
     background: #e5e5e5;
 }
 
-
 .calendar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 8px;
+    position: relative;
+}
+
+#prevMonth,
+#nextMonth {
+    position: relative;
+    z-index: 3;
+}
+
+.month-label {
+    display: inline-block;
+    padding: 4px 8px;
+    font-weight: bold;
+    cursor: pointer;
+    white-space: nowrap;
+    z-index: 2;
 }
 
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 6px;
+    width: 100%;
 }
 
 .calendar-day {
@@ -98,6 +99,38 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    padding: 10px 0;
+    background: #f5f5f5;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.calendar-day.today {
+    background: #ff8a3d;
+    color: #fff;
+}
+
+.calendar-day.selected {
+    background: #ff8a3d;
+    color: #fff;
+    border-radius: 8px;
+}
+
+.shift-dot {
+    width: 6px;
+    height: 6px;
+    background: #ff8a3d;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.calendar-day.selected .shift-dot {
+    background: #fff;
 }
 
 .shift-list {
@@ -117,34 +150,79 @@ body {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.calendar-day.today {
+.shift-summary {
+    margin-top: 12px;
+    padding: 10px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.month-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.month-modal.hidden {
+    display: none;
+}
+
+.month-modal-content {
+    background: #fff;
+    width: 90%;
+    max-width: 320px;
+    padding: 16px;
+    border-radius: 12px;
+}
+
+.year-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-weight: bold;
+}
+
+.month-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.month-grid button {
+    padding: 10px 0;
+    border-radius: 8px;
+    border: none;
+    background: #f5f5f5;
+    font-size: 14px;
+}
+
+.month-grid button.active {
     background: #ff8a3d;
     color: #fff;
 }
 
-.calendar-day {
-    position: relative;
-    padding: 10px 0;
-    background: #f5f5f5;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
+.footer-menu-item {
+    text-decoration: none;
+    color: #999; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex: 1;
+    height: 100%;
 }
 
-.shift-dot {
-    width: 6px;
-    height: 6px;
-    background: #ff8a3d;
-    border-radius: 50%;
-    position: absolute;
-    bottom: 4px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.calendar-grid {
-    display: grid !important;
-    width: 100%;
+.footer-menu-item .icon {
+    font-size: 22px;
+    line-height: 1;
+    margin-bottom: 2px;
 }
 
 .footer-menu-item.active {
@@ -152,20 +230,7 @@ body {
     font-weight: bold;
 }
 
-.calendar-day.selected {
-    background: #ff8a3d;
-    color: #fff;
+.footer-menu-item:active {
+    background: rgba(255, 138, 61, 0.15);
     border-radius: 8px;
-}
-
-.calendar-day.selected .shift-dot {
-    background: #fff;
-}
-
-.shift-summary {
-    margin-top: 12px;
-    padding: 10px;
-    background: #f5f5f5;
-    border-radius: 8px;
-    font-size: 14px;
 }

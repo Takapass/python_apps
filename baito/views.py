@@ -51,8 +51,10 @@ def sift(request):
     shift = Shift.objects.filter(id=shift_id, user=request.user).first()
 
     if request.method == "POST":
+        date_val = request.POST.get("date")
         start = request.POST.get("start")
         end = request.POST.get("end")
+        wage = request.POST.get("hourly_wage")
 
         if not start or not end:
             return render(request, "baito/sift.html", {
@@ -60,19 +62,25 @@ def sift(request):
                 "error": "開始時刻と終了時刻は必須です"
             })
 
+        if start >= end:
+            return render(request, "baito/sift.html", {
+                "shift": shift,
+                "error": "終了時刻は開始時刻より後にしてください"
+            })
+
         if shift:
-            shift.date = request.POST["date"]
+            shift.date = date_val
             shift.start_time = start
             shift.end_time = end
-            shift.hourly_wage = request.POST["hourly_wage"]
+            shift.hourly_wage = wage
             shift.save()
         else:
             Shift.objects.create(
                 user=request.user,
-                date=request.POST["date"],
+                date=date_val,
                 start_time=start,
                 end_time=end,
-                hourly_wage=request.POST["hourly_wage"],
+                hourly_wage=wage,
             )
 
         return redirect("baito:top")

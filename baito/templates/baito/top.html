@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>トップ</title>
     <link rel="stylesheet" href="{% static 'baito/base.css' %}">
-
     <link rel="stylesheet" href="{% static 'baito/top.css' %}">
 </head>
 <body>
@@ -20,7 +19,7 @@
     <section class="calendar">
         <div class="calendar-header">
             <button id="prevMonth">＜</button>
-            <span id="monthLabel"></span>
+            <span id="monthLabel" class="month-label"></span>
             <button id="nextMonth">＞</button>
         </div>
 
@@ -38,20 +37,30 @@
     </section>
 </main>
 
+<div id="monthModal" class="month-modal hidden">
+    <div class="month-modal-content">
+        <div class="year-row">
+            <button id="yearPrev">＜</button>
+            <span id="modalYear"></span>
+            <button id="yearNext">＞</button>
+        </div>
+        <div class="month-grid" id="monthGrid"></div>
+    </div>
+</div>
+
 <script src="{% static 'baito/calendar.js' %}"></script>
 
 <footer class="footer">
-    <!-- フッターメニュー -->
     <nav class="footer-menu">
         <a href="{% url 'baito:sift' %}" class="footer-menu-item active">
             <span class="icon">＋</span>
             <span>追加</span>
         </a>
-        <a href="{% url 'baito:setting' %}" class="footer-menu-item active">
+        <a href="{% url 'baito:setting' %}" class="footer-menu-item">
             <span class="icon">⚙️</span>
             <span>設定</span>
         </a>
-        <a href="{% url 'baito:login' %}" class="footer-menu-item active">
+        <a href="{% url 'baito:login' %}" class="footer-menu-item">
             <span class="icon">🔒</span>
             <span>ログアウト</span>
         </a>
@@ -59,4 +68,4 @@
 </footer>
 
 </body>
-</html> 
+</html>
