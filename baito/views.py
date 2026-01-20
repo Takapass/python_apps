@@ -1,12 +1,41 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from .models import Shift
-import json
 from django.http import JsonResponse
 from datetime import date
 
-# Create your views here.
+
+def signup(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        password2 = request.POST.get("password2")
+
+        if not username or not password:
+            return render(request, "baito/signup.html", {
+                "error": "全て入力してください"
+            })
+
+        if password != password2:
+            return render(request, "baito/signup.html", {
+                "error": "パスワードが一致しません"
+            })
+
+        if User.objects.filter(username=username).exists():
+            return render(request, "baito/signup.html", {
+                "error": "そのユーザー名は既に使われています"
+            })
+
+        User.objects.create_user(
+            username=username,
+            password=password
+        )
+
+        return redirect("baito:login")
+
+    return render(request, "baito/signup.html")
 
 
 @login_required
@@ -35,7 +64,7 @@ def shift_month_api(request):
             "end": s.end_time.strftime("%H:%M"),
             "hours": hours,
             "pay": pay,
-            })
+        })
 
     return JsonResponse(data)
 
@@ -111,10 +140,6 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("baito:login")
-
-
-def signup(request):
-    return render(request, 'baito/signup.html')
 
 
 def setting(request):
