@@ -3,14 +3,6 @@
     --safe-bottom: env(safe-area-inset-bottom);
 }
 
-/* body {
-    margin: 0;
-    padding-top: var(--safe-top);
-    padding-bottom: var(--safe-bottom);
-    min-height: 100svh; 
-    font-family: sans-serif;
-} */
-
 body {
     margin: 0;
     padding-top: var(--safe-top);

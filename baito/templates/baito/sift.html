@@ -10,11 +10,31 @@
 <body>
 
 <div class="card">
-    <input type="date" placeholder="日付">
-    <input type="text" placeholder="勤務時間">
-    <input type="text" placeholder="勤務先">
-    <input type="text" placeholder="給料見込み">
-    <button onclick="location.href='{% url 'baito:top' %}'">決定</button>
+    <form method="post">
+        {% csrf_token %}
+    
+        <label>
+            日付：
+            <input type="date" name="date" value="{{ shift.date|date:'Y-m-d' }}" required>
+        </label>
+    
+        <label>
+            開始：
+            <input type="time" name="start" value="{{ shift.start_time|time:'H:i' }}" required>
+        </label>
+    
+        <label>
+            終了：
+            <input type="time" name="end" value="{{ shift.end_time|time:'H:i' }}" required>
+        </label>
+    
+        <label>
+            時給：
+            <input type="number" name="hourly_wage" value="{{ shift.hourly_wage|default:1000 }}" required>
+        </label>
+    
+        <button type="submit">保存</button>
+    </form>    
 </div>
 
 <a href="{% url 'baito:top' %}" class="fab left">戻る</a>
