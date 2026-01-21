@@ -1,12 +1,43 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from .models import Shift
-import json
 from django.http import JsonResponse
 from datetime import date
+from .models import ShareToken
+from django.shortcuts import get_object_or_404
 
-# Create your views here.
+
+def signup(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        password2 = request.POST.get("password2")
+
+        if not username or not password:
+            return render(request, "baito/signup.html", {
+                "error": "全て入力してください"
+            })
+
+        if password != password2:
+            return render(request, "baito/signup.html", {
+                "error": "パスワードが一致しません"
+            })
+
+        if User.objects.filter(username=username).exists():
+            return render(request, "baito/signup.html", {
+                "error": "そのユーザー名は既に使われています"
+            })
+
+        User.objects.create_user(
+            username=username,
+            password=password
+        )
+
+        return redirect("baito:login")
+
+    return render(request, "baito/signup.html")
 
 
 @login_required
@@ -35,7 +66,7 @@ def shift_month_api(request):
             "end": s.end_time.strftime("%H:%M"),
             "hours": hours,
             "pay": pay,
-            })
+        })
 
     return JsonResponse(data)
 
@@ -113,9 +144,49 @@ def logout_view(request):
     return redirect("baito:login")
 
 
-def signup(request):
-    return render(request, 'baito/signup.html')
-
-
 def setting(request):
     return render(request, 'baito/setting.html')
+
+
+@login_required
+def create_share(request):
+    token_obj, _ = ShareToken.objects.get_or_create(user=request.user)
+    share_url = request.build_absolute_uri(f"/share/{token_obj.token}/")
+
+    return render(request, "baito/share_created.html", {
+        "share_url": share_url
+    })
+
+
+def share_top(request, token):
+    share = get_object_or_404(ShareToken, token=token)
+    return render(request, "baito/share_top.html", {
+        "share_user": share.user,
+        "token": token
+    })
+
+
+def share_shift_month_api(request, token):
+    share = get_object_or_404(ShareToken, token=token)
+    year = int(request.GET.get("year"))
+    month = int(request.GET.get("month"))
+
+    shifts = Shift.objects.filter(
+        user=share.user,
+        date__year=year,
+        date__month=month
+    )
+
+    data = {}
+
+    for s in shifts:
+        key = s.date.strftime("%Y-%m-%d")
+        start = s.start_time.hour + s.start_time.minute / 60
+        end = s.end_time.hour + s.end_time.minute / 60
+
+        data.setdefault(key, []).append({
+            "start": s.start_time.strftime("%H:%M"),
+            "end": s.end_time.strftime("%H:%M"),
+        })
+
+    return JsonResponse(data)

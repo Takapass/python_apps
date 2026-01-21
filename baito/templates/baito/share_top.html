@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ share_user.username }} のシフト</title>
+    <link rel="stylesheet" href="{% static 'baito/base.css' %}">
+    <link rel="stylesheet" href="{% static 'baito/top.css' %}">
+</head>
+<body>
+
+<header class="header">
+    <div class="header-left">{{ share_user.username }} のシフト</div>
+</header>
+
+<main class="main">
+    <section class="calendar">
+        <div class="calendar-header">
+            <button id="prevMonth">＜</button>
+            <span id="monthLabel"></span>
+            <button id="nextMonth">＞</button>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+    </section>
+
+    <section class="shift-list">
+        <h3 id="shiftTitle">日付を選択してください</h3>
+        <ul id="shiftItems"></ul>
+    </section>
+</main>
+
+<script>
+const TOKEN = "{{ token }}";
+</script>
+<script src="{% static 'baito/share_calendar.js' %}"></script>
+    
+
+</body>
+</html>
