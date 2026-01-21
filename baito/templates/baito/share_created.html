@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>共有URL</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'baito/share.css' %}">
+</head>
+<body>
+
+<div class="share-card">
+    <h2>共有リンク</h2>
+
+    <p>このURLを共有してください</p>
+
+    <input id="shareUrl" type="text" value="{{ share_url }}" readonly>
+
+    <button id="copyBtn" class="copy-btn">URLをコピー</button>
+
+    <div class="share-actions">
+        <a href="{% url 'baito:top' %}">戻る</a>
+    </div>
+</div>
+
+<script src="{% static 'baito/share.js' %}"></script>
+</body>
+</html>

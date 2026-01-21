@@ -5,6 +5,8 @@ from django.shortcuts import render, redirect
 from .models import Shift
 from django.http import JsonResponse
 from datetime import date
+from .models import ShareToken
+from django.shortcuts import get_object_or_404
 
 
 def signup(request):
@@ -144,3 +146,47 @@ def logout_view(request):
 
 def setting(request):
     return render(request, 'baito/setting.html')
+
+
+@login_required
+def create_share(request):
+    token_obj, _ = ShareToken.objects.get_or_create(user=request.user)
+    share_url = request.build_absolute_uri(f"/share/{token_obj.token}/")
+
+    return render(request, "baito/share_created.html", {
+        "share_url": share_url
+    })
+
+
+def share_top(request, token):
+    share = get_object_or_404(ShareToken, token=token)
+    return render(request, "baito/share_top.html", {
+        "share_user": share.user,
+        "token": token
+    })
+
+
+def share_shift_month_api(request, token):
+    share = get_object_or_404(ShareToken, token=token)
+    year = int(request.GET.get("year"))
+    month = int(request.GET.get("month"))
+
+    shifts = Shift.objects.filter(
+        user=share.user,
+        date__year=year,
+        date__month=month
+    )
+
+    data = {}
+
+    for s in shifts:
+        key = s.date.strftime("%Y-%m-%d")
+        start = s.start_time.hour + s.start_time.minute / 60
+        end = s.end_time.hour + s.end_time.minute / 60
+
+        data.setdefault(key, []).append({
+            "start": s.start_time.strftime("%H:%M"),
+            "end": s.end_time.strftime("%H:%M"),
+        })
+
+    return JsonResponse(data)
