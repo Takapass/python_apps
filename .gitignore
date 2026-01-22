@@ -1,0 +1,55 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+*.egg
+*.egg-info/
+dist/
+build/
+*.egg-info/
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+db.sqlite3
+*.sqlite3-journal
+
+# Pytest
+.cache/
+
+# Pyenv
+# .python-version
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# macOS Trash folder which might appear on external disk
+.Trashes
+._*
+
+# Editor backups
+*~
+*.swp
+*.swo
+*.orig
+
+# Python dotenv
+.env
+*.env
