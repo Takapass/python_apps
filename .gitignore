@@ -33,7 +33,7 @@ db.sqlite3
 .cache/
 
 # Pyenv
-# .python-version
+.python-version
 
 # macOS
 .DS_Store
